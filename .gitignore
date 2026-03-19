@@ -25,6 +25,10 @@ dist/
 build/
 *.log
 logs/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
 
 # IDE & OS (AIOX)
 .DS_Store
