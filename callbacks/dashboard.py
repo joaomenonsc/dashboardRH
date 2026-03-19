@@ -3,8 +3,10 @@
 import dash
 from dash import Input, Output, State, html, dash_table
 import numpy as np
+import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+from plotly.basedatatypes import BaseFigure
 
 from config import COLORS, GRAPH_LAYOUT, KPI_STYLE
 from data.loader import filter_data
@@ -19,13 +21,38 @@ FILTER_INPUTS = [
 ]
 
 
-def _get_filter_args(dept, gender, status, manager, start_date, end_date):
+def _get_filter_args(
+    dept: list[str] | None,
+    gender: str | None,
+    status: str | None,
+    manager: str | None,
+    start_date: str | None,
+    end_date: str | None,
+) -> tuple[list[str] | None, str | None, str | None, list[str] | None, str | None]:
+    """Normaliza os filtros recebidos da interface.
+
+    Args:
+        dept: Departamentos selecionados.
+        gender: Gênero selecionado.
+        status: Status de emprego selecionado.
+        manager: Gestor selecionado.
+        start_date: Data inicial do intervalo.
+        end_date: Data final do intervalo.
+
+    Returns:
+        Tupla com os filtros normalizados.
+    """
     date_range = [start_date, end_date] if start_date and end_date else None
     return dept, gender, status, date_range, manager
 
 
-def register_callbacks(app, df):
-    """Registra todos os callbacks do dashboard."""
+def register_callbacks(app: dash.Dash, df: pd.DataFrame) -> None:
+    """Registra os callbacks de atualização e exportação.
+
+    Args:
+        app: Instância principal da aplicação Dash.
+        df: DataFrame base do dashboard.
+    """
 
     @app.callback(
         Output("kpi-cards", "children"),
@@ -101,7 +128,23 @@ def register_callbacks(app, df):
 
 # --- KPIs ---
 
-def _kpi_card(title, value, tooltip=None, delta=None):
+def _kpi_card(
+    title: str,
+    value: str,
+    tooltip: str | None = None,
+    delta: float | None = None,
+) -> html.Div:
+    """Cria um card de KPI.
+
+    Args:
+        title: Título do indicador.
+        value: Valor principal formatado.
+        tooltip: Texto auxiliar exibido no hover.
+        delta: Diferença em relação à base geral.
+
+    Returns:
+        Componente de KPI pronto para renderização.
+    """
     children = [
         html.P(
             title,
@@ -132,7 +175,19 @@ def _kpi_card(title, value, tooltip=None, delta=None):
     return html.Div(style=KPI_STYLE, children=children)
 
 
-def _build_kpis(filtered, full_df=None):
+def _build_kpis(
+    filtered: pd.DataFrame,
+    full_df: pd.DataFrame | None = None,
+) -> list[html.Div]:
+    """Calcula e monta os KPIs do recorte atual.
+
+    Args:
+        filtered: DataFrame já filtrado.
+        full_df: DataFrame completo para cálculo de deltas.
+
+    Returns:
+        Lista de componentes de KPI.
+    """
     total = len(filtered)
     terminated = filtered["Termd"].sum()
     turnover = (terminated / total * 100) if total > 0 else 0
@@ -170,7 +225,15 @@ def _build_kpis(filtered, full_df=None):
 
 # --- Charts ---
 
-def _chart_headcount(filtered):
+def _chart_headcount(filtered: pd.DataFrame) -> BaseFigure:
+    """Gera headcount por departamento.
+
+    Args:
+        filtered: DataFrame filtrado.
+
+    Returns:
+        Figura Plotly configurada.
+    """
     dept_counts = (
         filtered.groupby("Department").size().reset_index(name="count").sort_values("count")
     )
@@ -182,7 +245,15 @@ def _chart_headcount(filtered):
     return fig
 
 
-def _chart_salary(filtered):
+def _chart_salary(filtered: pd.DataFrame) -> BaseFigure:
+    """Gera boxplot de distribuição salarial por departamento.
+
+    Args:
+        filtered: DataFrame filtrado.
+
+    Returns:
+        Figura Plotly configurada.
+    """
     fig = px.box(
         filtered, x="Department", y="Salary",
         color_discrete_sequence=[COLORS["accent"]],
@@ -191,7 +262,15 @@ def _chart_salary(filtered):
     return fig
 
 
-def _chart_performance(filtered):
+def _chart_performance(filtered: pd.DataFrame) -> BaseFigure:
+    """Gera pizza de distribuição de performance.
+
+    Args:
+        filtered: DataFrame filtrado.
+
+    Returns:
+        Figura Plotly configurada.
+    """
     perf_counts = filtered.groupby("PerformanceScore").size().reset_index(name="count")
     fig = px.pie(
         perf_counts, values="count", names="PerformanceScore",
@@ -201,7 +280,15 @@ def _chart_performance(filtered):
     return fig
 
 
-def _chart_turnover(filtered):
+def _chart_turnover(filtered: pd.DataFrame) -> BaseFigure:
+    """Gera gráfico de motivos de desligamento.
+
+    Args:
+        filtered: DataFrame filtrado.
+
+    Returns:
+        Figura Plotly configurada.
+    """
     termed = filtered[filtered["Termd"] == 1]
     if len(termed) > 0:
         reasons = termed.groupby("TermReason").size().reset_index(name="count").sort_values("count")
@@ -216,7 +303,15 @@ def _chart_turnover(filtered):
     return fig
 
 
-def _chart_timeline(filtered):
+def _chart_timeline(filtered: pd.DataFrame) -> BaseFigure:
+    """Gera série temporal de contratações e desligamentos.
+
+    Args:
+        filtered: DataFrame filtrado.
+
+    Returns:
+        Figura Plotly configurada.
+    """
     hires = filtered.groupby("HireMonth").size().reset_index(name="Contratações")
     termed = filtered[filtered["Termd"] == 1].copy()
 
@@ -242,7 +337,15 @@ def _chart_timeline(filtered):
     return fig
 
 
-def _chart_correlation(filtered):
+def _chart_correlation(filtered: pd.DataFrame) -> BaseFigure:
+    """Gera dispersão entre satisfação e engagement por status.
+
+    Args:
+        filtered: DataFrame filtrado.
+
+    Returns:
+        Figura Plotly configurada.
+    """
     fig = px.scatter(
         filtered, x="EmpSatisfaction", y="EngagementSurvey",
         color=filtered["Termd"].map({0: "Ativo", 1: "Desligado"}),
@@ -253,7 +356,15 @@ def _chart_correlation(filtered):
     return fig
 
 
-def _chart_manager(filtered):
+def _chart_manager(filtered: pd.DataFrame) -> BaseFigure:
+    """Gera ranking de turnover por gestor.
+
+    Args:
+        filtered: DataFrame filtrado.
+
+    Returns:
+        Figura Plotly configurada.
+    """
     manager_stats = (
         filtered.groupby("ManagerName")
         .agg(total=("Termd", "size"), desligados=("Termd", "sum"))
@@ -270,7 +381,15 @@ def _chart_manager(filtered):
     return fig
 
 
-def _chart_engagement(filtered):
+def _chart_engagement(filtered: pd.DataFrame) -> BaseFigure:
+    """Gera histograma da pesquisa de engagement.
+
+    Args:
+        filtered: DataFrame filtrado.
+
+    Returns:
+        Figura Plotly configurada.
+    """
     fig = px.histogram(
         filtered, x="EngagementSurvey", nbins=20,
         color_discrete_sequence=[COLORS["accent3"]],
@@ -279,7 +398,15 @@ def _chart_engagement(filtered):
     return fig
 
 
-def _chart_diversity(filtered):
+def _chart_diversity(filtered: pd.DataFrame) -> BaseFigure:
+    """Gera barras de diversidade por raça e gênero.
+
+    Args:
+        filtered: DataFrame filtrado.
+
+    Returns:
+        Figura Plotly configurada.
+    """
     diversity = filtered.groupby(["RaceDesc", "Sex"]).size().reset_index(name="count")
     fig = px.bar(
         diversity, x="RaceDesc", y="count", color="Sex", barmode="group",
@@ -289,7 +416,15 @@ def _chart_diversity(filtered):
     return fig
 
 
-def _chart_recruitment(filtered):
+def _chart_recruitment(filtered: pd.DataFrame) -> BaseFigure:
+    """Gera gráfico de canais de recrutamento.
+
+    Args:
+        filtered: DataFrame filtrado.
+
+    Returns:
+        Figura Plotly configurada.
+    """
     source_counts = filtered.groupby("RecruitmentSource").size().reset_index(name="count").sort_values("count")
     fig = px.bar(
         source_counts, x="count", y="RecruitmentSource", orientation="h",
@@ -299,7 +434,15 @@ def _chart_recruitment(filtered):
     return fig
 
 
-def _chart_state(filtered):
+def _chart_state(filtered: pd.DataFrame) -> BaseFigure:
+    """Gera distribuição geográfica de colaboradores por estado.
+
+    Args:
+        filtered: DataFrame filtrado.
+
+    Returns:
+        Figura Plotly configurada.
+    """
     state_stats = (
         filtered.groupby("State")
         .agg(total=("Termd", "size"), desligados=("Termd", "sum"))
@@ -322,7 +465,15 @@ def _chart_state(filtered):
     return fig
 
 
-def _chart_position_salary(filtered):
+def _chart_position_salary(filtered: pd.DataFrame) -> BaseFigure:
+    """Gera benchmarking salarial por cargo com amostra mínima.
+
+    Args:
+        filtered: DataFrame filtrado.
+
+    Returns:
+        Figura Plotly configurada.
+    """
     position_counts = filtered.groupby("Position").size().reset_index(name="count")
     top_positions = position_counts[position_counts["count"] >= 3]["Position"].tolist()
 
@@ -340,7 +491,15 @@ def _chart_position_salary(filtered):
     return fig
 
 
-def _chart_lateness(filtered):
+def _chart_lateness(filtered: pd.DataFrame) -> BaseFigure:
+    """Gera relação entre atrasos e performance.
+
+    Args:
+        filtered: DataFrame filtrado.
+
+    Returns:
+        Figura Plotly configurada.
+    """
     fig = px.scatter(
         filtered, x="DaysLateLast30", y="PerformanceScore",
         color="Department", opacity=0.7,
@@ -350,7 +509,15 @@ def _chart_lateness(filtered):
     return fig
 
 
-def _chart_projects(filtered):
+def _chart_projects(filtered: pd.DataFrame) -> BaseFigure:
+    """Gera relação entre projetos especiais e engagement.
+
+    Args:
+        filtered: DataFrame filtrado.
+
+    Returns:
+        Figura Plotly configurada.
+    """
     fig = px.scatter(
         filtered, x="SpecialProjectsCount", y="EngagementSurvey",
         color=filtered["Termd"].map({0: "Ativo", 1: "Desligado"}),
@@ -362,7 +529,15 @@ def _chart_projects(filtered):
     return fig
 
 
-def _chart_heatmap(filtered):
+def _chart_heatmap(filtered: pd.DataFrame) -> BaseFigure:
+    """Gera heatmap de correlações entre variáveis numéricas.
+
+    Args:
+        filtered: DataFrame filtrado.
+
+    Returns:
+        Figura Plotly configurada.
+    """
     numeric_cols = ["Salary", "EmpSatisfaction", "EngagementSurvey", "Absences", "DaysLateLast30", "SpecialProjectsCount"]
     available = [c for c in numeric_cols if c in filtered.columns]
     if len(available) < 2 or len(filtered) < 2:
@@ -384,7 +559,15 @@ def _chart_heatmap(filtered):
     return fig
 
 
-def _chart_tenure(filtered):
+def _chart_tenure(filtered: pd.DataFrame) -> BaseFigure:
+    """Gera distribuição de tenure para colaboradores desligados.
+
+    Args:
+        filtered: DataFrame filtrado.
+
+    Returns:
+        Figura Plotly configurada.
+    """
     termed = filtered[filtered["Termd"] == 1]
     if len(termed) > 0:
         fig = px.histogram(
@@ -400,7 +583,15 @@ def _chart_tenure(filtered):
     return fig
 
 
-def _build_data_table(filtered):
+def _build_data_table(filtered: pd.DataFrame) -> dash_table.DataTable:
+    """Monta tabela detalhada dos colaboradores filtrados.
+
+    Args:
+        filtered: DataFrame filtrado.
+
+    Returns:
+        Componente `DataTable` configurado para exibição.
+    """
     display_cols = [
         "Employee_Name", "Department", "Position", "State", "ManagerName",
         "Salary", "EmpSatisfaction", "EngagementSurvey",

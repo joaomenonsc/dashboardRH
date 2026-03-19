@@ -1,12 +1,20 @@
 """Sidebar com filtros do dashboard."""
 
 from dash import dcc, html
+import pandas as pd
 
 from config import COLORS
 
 
-def create_sidebar(df):
-    """Cria a sidebar com filtros interativos."""
+def create_sidebar(df: pd.DataFrame) -> html.Div:
+    """Cria a barra lateral com filtros e ação de exportação.
+
+    Args:
+        df: DataFrame já tratado com os dados de RH.
+
+    Returns:
+        Componente de layout da barra lateral.
+    """
     min_date = df["DateofHire"].min()
     max_date = df["DateofHire"].max()
 
@@ -97,7 +105,15 @@ def create_sidebar(df):
     )
 
 
-def _filter_label(text):
+def _filter_label(text: str) -> html.Label:
+    """Renderiza o rótulo padrão usado nos filtros.
+
+    Args:
+        text: Texto exibido no rótulo.
+
+    Returns:
+        Componente de rótulo formatado.
+    """
     return html.Label(
         text,
         style={

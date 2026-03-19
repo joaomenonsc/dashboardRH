@@ -9,7 +9,11 @@ DATA_PATH = Path(__file__).resolve().parent.parent / "HRDataset_v14.csv"
 
 
 def load_data() -> pd.DataFrame:
-    """Carrega e pré-processa o dataset de RH."""
+    """Carrega e pré-processa o dataset de RH.
+
+    Returns:
+        DataFrame pronto para consumo do dashboard.
+    """
     if not DATA_PATH.exists():
         print(f"Erro: Arquivo de dados não encontrado em {DATA_PATH}")
         print("Certifique-se de que 'HRDataset_v14.csv' está na raiz do projeto.")
@@ -45,7 +49,19 @@ def filter_data(
     date_range: list | None,
     manager: str | None = None,
 ) -> pd.DataFrame:
-    """Filtra o dataframe com base nos filtros selecionados."""
+    """Filtra o dataframe conforme os critérios selecionados na UI.
+
+    Args:
+        df: DataFrame completo de RH.
+        dept: Lista de departamentos selecionados.
+        gender: Gênero selecionado.
+        status: Status de emprego selecionado.
+        date_range: Intervalo de datas de contratação.
+        manager: Nome do gestor selecionado.
+
+    Returns:
+        DataFrame filtrado.
+    """
     filtered = df.copy()
     if dept:
         filtered = filtered[filtered["Department"].isin(dept)]

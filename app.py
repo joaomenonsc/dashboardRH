@@ -2,6 +2,7 @@
 
 import dash
 from dash import html
+import pandas as pd
 
 from config import COLORS
 from data.loader import load_data
@@ -10,7 +11,7 @@ from layouts.main_content import create_main_content
 from callbacks.dashboard import register_callbacks
 
 # --- Data ---
-df = load_data()
+df: pd.DataFrame = load_data()
 
 # --- App ---
 app = dash.Dash(

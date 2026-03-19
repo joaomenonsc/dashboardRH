@@ -1,12 +1,16 @@
 """Layout principal com KPIs e gráficos."""
 
-from dash import dash_table, dcc, html
+from dash import dcc, html
 
 from config import CARD_STYLE, COLORS
 
 
-def create_main_content():
-    """Cria o conteúdo principal do dashboard."""
+def create_main_content() -> html.Div:
+    """Cria a área principal do dashboard.
+
+    Returns:
+        Container com KPIs, gráficos e tabela de dados.
+    """
     return html.Div(
         style={"flex": "1", "padding": "24px 32px", "overflowY": "auto"},
         children=[
@@ -95,7 +99,15 @@ def create_main_content():
     )
 
 
-def _graph_row(children):
+def _graph_row(children: list[html.Div]) -> html.Div:
+    """Monta uma linha responsiva com cards de gráficos.
+
+    Args:
+        children: Lista de cards a serem exibidos na linha.
+
+    Returns:
+        Linha de layout em grid.
+    """
     return html.Div(
         style={
             "display": "grid",
@@ -107,7 +119,15 @@ def _graph_row(children):
     )
 
 
-def _graph_card(graph_id):
+def _graph_card(graph_id: str) -> html.Div:
+    """Renderiza um card de gráfico com indicador de carregamento.
+
+    Args:
+        graph_id: Identificador do componente `dcc.Graph`.
+
+    Returns:
+        Card de layout contendo o gráfico.
+    """
     return html.Div(
         style=CARD_STYLE,
         children=[
