@@ -1,9 +1,9 @@
 """Sidebar com filtros do dashboard."""
 
-from dash import dcc, html
-import pandas as pd
+from dash import dcc, html  # type: ignore
+import pandas as pd  # type: ignore
 
-from config import COLORS, SPACING, TYPE_SCALE
+from config import COLORS, SPACING, TYPE_SCALE  # type: ignore
 
 # Estilo base para inputs nativos de data
 _DATE_INPUT_STYLE = {

@@ -75,9 +75,9 @@ KPI_STYLE = {
     "minWidth": "160px",
 }
 
-GRAPH_LAYOUT = dict(
-    paper_bgcolor="rgba(0,0,0,0)",
-    plot_bgcolor="rgba(0,0,0,0)",
-    font_color=COLORS["text"],
-    margin=dict(l=40, r=20, t=40, b=40),
-)
+GRAPH_LAYOUT = {
+    "paper_bgcolor": "rgba(0,0,0,0)",
+    "plot_bgcolor": "rgba(0,0,0,0)",
+    "font_color": COLORS["text"],
+    "margin": {"l": 40, "r": 20, "t": 40, "b": 40},
+}

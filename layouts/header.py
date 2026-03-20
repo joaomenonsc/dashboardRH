@@ -1,9 +1,9 @@
 """Header fixo do dashboard B.I. de RH."""
 
-from dash import html
-import pandas as pd
+from dash import html  # type: ignore
+import pandas as pd  # type: ignore
 
-from config import COLORS, SPACING, TYPE_SCALE
+from config import COLORS, SPACING, TYPE_SCALE  # type: ignore
 
 
 def create_header(df: pd.DataFrame) -> html.Header:

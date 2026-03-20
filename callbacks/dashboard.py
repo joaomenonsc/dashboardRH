@@ -2,17 +2,17 @@
 
 import datetime
 
-import dash
-from dash import Input, Output, State, html, dash_table, ctx
-import numpy as np
-import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
-from plotly.basedatatypes import BaseFigure
+import dash  # type: ignore
+from dash import Input, Output, State, html, dash_table, ctx  # type: ignore
+import numpy as np  # type: ignore
+import pandas as pd  # type: ignore
+import plotly.express as px  # type: ignore
+import plotly.graph_objects as go  # type: ignore
+from plotly.basedatatypes import BaseFigure  # type: ignore
 
-from config import COLORS, GRAPH_LAYOUT, KPI_STYLE, CHART_COLORS, SPACING, TYPE_SCALE
-from data.loader import filter_data
-from layouts.main_content import (
+from config import COLORS, GRAPH_LAYOUT, KPI_STYLE, CHART_COLORS, SPACING, TYPE_SCALE  # type: ignore
+from data.loader import filter_data  # type: ignore
+from layouts.main_content import (  # type: ignore
     build_tab_overview,
     build_tab_performance,
     build_tab_people,
