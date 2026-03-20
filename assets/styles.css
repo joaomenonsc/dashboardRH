@@ -1,0 +1,361 @@
+/* ===================================================
+   B.I. de RH — Dashboard Styles
+   Arquivo: assets/styles.css (carregado automaticamente pelo Dash)
+   =================================================== */
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* --- DatePickerRange — calendar como overlay flutuante --- */
+/* Evita que o calendário abra inline e crie espaço branco na sidebar */
+.DateRangePicker_picker {
+    z-index: 9999 !important;
+    position: fixed !important;
+    background-color: #1a1c25 !important;
+    border: 1px solid #2a2d3a !important;
+    border-radius: 8px !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
+}
+
+.DayPicker,
+.DayPicker__withBorder {
+    background-color: #1a1c25 !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+}
+
+.CalendarMonth,
+.CalendarMonthGrid {
+    background-color: #1a1c25 !important;
+}
+
+.CalendarDay__default {
+    background-color: #1a1c25 !important;
+    color: #e0e0e0 !important;
+    border-color: #2a2d3a !important;
+}
+
+.CalendarDay__default:hover {
+    background-color: #22252f !important;
+    color: #636efa !important;
+}
+
+.CalendarDay__selected,
+.CalendarDay__selected:hover {
+    background-color: #636efa !important;
+    border-color: #636efa !important;
+    color: #fff !important;
+}
+
+.CalendarDay__selected_span {
+    background-color: rgba(99, 111, 250, 0.2) !important;
+    border-color: #2a2d3a !important;
+    color: #e0e0e0 !important;
+}
+
+.DayPickerNavigation_button {
+    background-color: #22252f !important;
+    border-color: #2a2d3a !important;
+}
+
+.DayPickerNavigation_svg__horizontal {
+    fill: #e0e0e0 !important;
+}
+
+.CalendarMonth_caption {
+    color: #e0e0e0 !important;
+}
+
+.DayPicker_weekHeader_li small {
+    color: #888 !important;
+}
+
+.DateInput_input {
+    background-color: transparent !important;
+    color: #e0e0e0 !important;
+    font-size: 12px !important;
+}
+
+.DateInput_fang {
+    display: none !important;
+}
+
+/* --- KPI Cards --- */
+.kpi-card {
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+    cursor: default;
+}
+
+.kpi-card:hover {
+    border-color: #636efa !important;
+    background-color: #22252f !important;
+    transform: translateY(-2px);
+}
+
+.kpi-card:focus-within {
+    outline: 2px solid #636efa;
+    outline-offset: 2px;
+}
+
+/* --- Graph Cards --- */
+.graph-card {
+    transition: border-color 0.2s ease;
+}
+
+.graph-card:hover {
+    border-color: rgba(99, 111, 250, 0.4) !important;
+}
+
+/* --- Buttons --- */
+.btn-primary {
+    transition: background-color 0.2s ease, transform 0.15s ease, opacity 0.15s ease;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #7b83fb !important;
+    transform: scale(1.02);
+}
+
+.btn-primary:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+}
+
+.btn-primary:focus {
+    outline: 2px solid #636efa;
+    outline-offset: 2px;
+}
+
+.btn-ghost {
+    background: transparent;
+    border: 1px solid #636efa;
+    color: #636efa;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    padding: 4px 10px;
+    font-size: 12px;
+}
+
+.btn-ghost:hover {
+    background-color: rgba(99, 111, 250, 0.15);
+}
+
+.btn-ghost:focus {
+    outline: 2px solid #636efa;
+    outline-offset: 2px;
+}
+
+.btn-ghost:active {
+    opacity: 0.9;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    transition: width 0.3s ease;
+    position: relative;
+}
+
+.sidebar-section-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #888;
+    font-weight: 700;
+    margin: 16px 0 8px 0;
+    display: block;
+}
+
+.sidebar-export-footer {
+    position: sticky;
+    bottom: 0;
+    background-color: #151720;
+    padding: 12px 0 4px 0;
+    border-top: 1px solid #2a2d3a;
+}
+
+/* --- Tabs --- */
+.tab-active {
+    border-bottom: 2px solid #636efa !important;
+    color: #636efa !important;
+    font-weight: 600 !important;
+}
+
+/* Dash Tab overrides */
+.custom-tabs .tab--selected {
+    background-color: #1a1c25 !important;
+    border-top: 2px solid #636efa !important;
+    border-left: 1px solid #2a2d3a !important;
+    border-right: 1px solid #2a2d3a !important;
+    border-bottom: none !important;
+    color: #636efa !important;
+}
+
+.custom-tabs .tab {
+    background-color: #151720 !important;
+    color: #888 !important;
+    border: 1px solid #2a2d3a !important;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.custom-tabs .tab:hover {
+    color: #e0e0e0 !important;
+    background-color: #1a1c25 !important;
+}
+
+.custom-tabs .tab:focus {
+    outline: 2px solid #636efa;
+    outline-offset: -2px;
+}
+
+/* --- Filter Badge --- */
+.filter-badge {
+    display: inline-block;
+    background-color: #636efa;
+    color: #fff;
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+/* --- Context Bar (chips) --- */
+.context-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    padding: 8px 32px;
+    background-color: #12141c;
+    border-bottom: 1px solid #2a2d3a;
+    min-height: 38px;
+}
+
+.filter-chip {
+    background-color: rgba(99, 111, 250, 0.15);
+    border: 1px solid rgba(99, 111, 250, 0.4);
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-size: 12px;
+    color: #a0a0a0;
+    white-space: nowrap;
+}
+
+/* --- Toast Notification --- */
+.toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.toast {
+    background-color: #1a1c25;
+    border: 1px solid #2a2d3a;
+    border-left: 4px solid #00cc96;
+    border-radius: 6px;
+    padding: 12px 16px;
+    color: #e0e0e0;
+    font-size: 13px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    animation: slideIn 0.3s ease, fadeOut 0.4s ease 2.6s forwards;
+    pointer-events: auto;
+    max-width: 320px;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+
+/* --- Data Table Rows Hover --- */
+.dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner tr:hover td {
+    background-color: #22252f !important;
+}
+
+/* --- Header --- */
+.app-header {
+    background-color: #151720;
+    border-bottom: 1px solid #2a2d3a;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+/* --- Responsive: Sidebar colapsável < 768px --- */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        border-right: none !important;
+    }
+
+    .sidebar.sidebar--open {
+        width: 260px !important;
+        padding: 24px 20px !important;
+        overflow-y: auto !important;
+        border-right: 1px solid #2a2d3a !important;
+    }
+
+    .hamburger-btn {
+        display: flex !important;
+        position: fixed;
+        top: 14px;
+        left: 16px;
+        z-index: 1000;
+        background: #1a1c25;
+        border: 1px solid #2a2d3a;
+        border-radius: 6px;
+        padding: 8px 10px;
+        cursor: pointer;
+        color: #e0e0e0;
+        font-size: 18px;
+    }
+
+    .app-content {
+        flex-direction: column !important;
+    }
+}
+
+.hamburger-btn {
+    display: none;
+}
+
+/* --- Responsive: grid 1 coluna < 768px --- */
+@media (max-width: 768px) {
+    .graph-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* --- Responsive: Tabs verticais < 480px --- */
+@media (max-width: 480px) {
+    .custom-tabs .react-tabs__tab-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .custom-tabs .tab {
+        width: 100%;
+        text-align: center;
+    }
+}
