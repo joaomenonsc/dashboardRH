@@ -35,7 +35,7 @@ def create_header(df: pd.DataFrame) -> html.Header:
                         },
                     ),
                     html.P(
-                        "People Analytics Dashboard",
+                        "Dashboard de Análise de Pessoas",
                         style={
                             "margin": "2px 0 0 0",
                             "fontSize": TYPE_SCALE["sm"],

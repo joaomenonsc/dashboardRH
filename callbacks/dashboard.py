@@ -210,7 +210,7 @@ def register_callbacks(app: dash.Dash, df: pd.DataFrame) -> None:
         if gender:
             active.append(("Gênero", gender))
         if status:
-            active.append(("Status", status))
+            active.append(("Situação", status))
         if manager:
             active.append(("Gestor", manager))
         if start_date and end_date:
@@ -406,10 +406,10 @@ def _build_kpis(filtered: pd.DataFrame, full_df: pd.DataFrame | None = None) -> 
 
     return [
         _kpi_card("👥", "Colaboradores", f"{total}",                "Total de colaboradores no filtro atual"),
-        _kpi_card("📉", "Turnover",      f"{turnover:.1f}%",        "Percentual de desligamentos sobre o total",   d_turnover, "%"),
+        _kpi_card("📉", "Rotatividade",  f"{turnover:.1f}%",        "Percentual de desligamentos sobre o total",   d_turnover, "%"),
         _kpi_card("💰", "Salário Médio", f"${avg_salary:,.0f}",     "Média salarial dos colaboradores filtrados",  d_salary,   ""),
         _kpi_card("😊", "Satisfação",    f"{avg_sat:.1f}/5",        "Média da pesquisa de satisfação (1-5)",       d_sat,      ""),
-        _kpi_card("🎯", "Engagement",    f"{avg_eng:.2f}",          "Média da pesquisa de engajamento",            d_eng,      ""),
+        _kpi_card("🎯", "Engajamento",   f"{avg_eng:.2f}",          "Média da pesquisa de engajamento",            d_eng,      ""),
         _kpi_card("📅", "Absências",     f"{avg_abs:.1f}d",         "Média de dias de ausência por colaborador",   d_abs,      "d"),
     ]
 
@@ -522,7 +522,7 @@ def _chart_correlation(filtered: pd.DataFrame) -> BaseFigure:
         color_discrete_map={"Ativo": CHART_COLORS[0], "Desligado": CHART_COLORS[1]},
         opacity=0.7,
     )
-    fig.update_layout(**GRAPH_LAYOUT, xaxis_title="Satisfação", yaxis_title="Engagement Survey")
+    fig.update_layout(**GRAPH_LAYOUT, xaxis_title="Satisfação", yaxis_title="Pesquisa de Engajamento")
     return fig
 
 
@@ -542,7 +542,7 @@ def _chart_manager(filtered: pd.DataFrame) -> BaseFigure:
         manager_stats, x="turnover", y="ManagerName", orientation="h",
         color_discrete_sequence=[CHART_COLORS[1]], hover_data=["total", "desligados"],
     )
-    fig.update_layout(**GRAPH_LAYOUT, yaxis_title="", xaxis_title="Turnover (%)")
+    fig.update_layout(**GRAPH_LAYOUT, yaxis_title="", xaxis_title="Rotatividade (%)")
     return fig
 
 
@@ -553,7 +553,7 @@ def _chart_engagement(filtered: pd.DataFrame) -> BaseFigure:
         filtered, x="EngagementSurvey", nbins=20,
         color_discrete_sequence=[CHART_COLORS[2]],
     )
-    fig.update_layout(**GRAPH_LAYOUT, xaxis_title="Score de Engagement", yaxis_title="Frequência")
+    fig.update_layout(**GRAPH_LAYOUT, xaxis_title="Score de Engajamento", yaxis_title="Frequência")
     return fig
 
 
@@ -639,7 +639,7 @@ def _chart_projects(filtered: pd.DataFrame) -> BaseFigure:
         opacity=0.7,
         hover_data=["Employee_Name", "Department"],
     )
-    fig.update_layout(**GRAPH_LAYOUT, xaxis_title="Qtd. Projetos Especiais", yaxis_title="Engagement Survey")
+    fig.update_layout(**GRAPH_LAYOUT, xaxis_title="Qtd. Projetos Especiais", yaxis_title="Pesquisa de Engajamento")
     return fig
 
 
@@ -653,7 +653,7 @@ def _chart_heatmap(filtered: pd.DataFrame) -> BaseFigure:
     corr = filtered[available].corr()
     labels = {
         "Salary": "Salário", "EmpSatisfaction": "Satisfação",
-        "EngagementSurvey": "Engagement", "Absences": "Absências",
+        "EngagementSurvey": "Engajamento", "Absences": "Absências",
         "DaysLateLast30": "Atrasos 30d", "SpecialProjectsCount": "Proj. Especiais",
     }
     renamed = [labels.get(c, c) for c in corr.columns]
@@ -695,12 +695,12 @@ COL_LABELS = {
     "Position":           "Cargo",
     "Salary":             "Salário",
     "PerformanceScore":   "Performance",
-    "EmploymentStatus":   "Status",
-    "TenureMonths":       "Tenure (m)",
+    "EmploymentStatus":   "Situação",
+    "TenureMonths":       "Tempo de Casa (m)",
     "State":              "Estado",
     "ManagerName":        "Gestor",
     "EmpSatisfaction":    "Satisfação",
-    "EngagementSurvey":   "Engagement",
+    "EngagementSurvey":   "Engajamento",
     "DaysLateLast30":     "Atrasos 30d",
     "SpecialProjectsCount": "Proj. Especiais",
 }

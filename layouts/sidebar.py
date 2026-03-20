@@ -79,7 +79,7 @@ def create_sidebar(df: pd.DataFrame) -> html.Div:
                 placeholder="Todos",
                 style={"marginBottom": SPACING["md"]},
             ),
-            _filter_label("Status"),
+            _filter_label("Situação"),
             dcc.Dropdown(
                 id="filter-status",
                 options=[{"label": s, "value": s} for s in sorted(df["EmploymentStatus"].unique())],

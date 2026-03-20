@@ -7,22 +7,22 @@ from config import CARD_STYLE, COLORS, SPACING, TYPE_SCALE
 
 # --- Subtítulos por gráfico (F2.8) ---
 GRAPH_SUBTITLES = {
-    "chart-headcount":      ("Headcount por Departamento",          "Distribuição de colaboradores por área"),
+    "chart-headcount":      ("Total de Colaboradores por Departamento", "Distribuição de colaboradores por área"),
     "chart-salary":         ("Distribuição Salarial",               "Faixas salariais e outliers por departamento"),
     "chart-timeline":       ("Tendência: Contratações vs Saídas",   "Evolução mensal de entradas e desligamentos"),
     "chart-heatmap":        ("Correlações entre Variáveis",         "Intensidade das correlações entre 6 variáveis-chave"),
     "chart-performance":    ("Distribuição de Performance",         "Proporção de scores de avaliação"),
     "chart-lateness":       ("Atrasos vs Performance",              "Impacto dos atrasos no score de performance"),
-    "chart-engagement":     ("Distribuição de Engagement",          "Frequência de scores da pesquisa de engajamento"),
-    "chart-projects":       ("Projetos Especiais vs Engagement",    "Relação entre projetos especiais e engajamento"),
+    "chart-engagement":     ("Distribuição de Engajamento",         "Frequência de scores da pesquisa de engajamento"),
+    "chart-projects":       ("Projetos Especiais vs Engajamento",   "Relação entre projetos especiais e engajamento"),
     "chart-diversity":      ("Diversidade — Raça e Gênero",        "Composição étnica e de gênero da organização"),
     "chart-state":          ("Distribuição Geográfica",             "Presença regional e concentração por estado"),
     "chart-position-salary":("Benchmarking Salarial por Cargo",    "Comparativo salarial entre posições (min. 3 ocupantes)"),
-    "chart-tenure":         ("Tempo de Permanência",                "Tempo médio até desligamento — identificar riscos"),
+    "chart-tenure":         ("Tempo de Casa",                       "Tempo médio até desligamento — identificar riscos"),
     "chart-turnover":       ("Motivos de Desligamento",             "Principais causas de saída voluntária e involuntária"),
     "chart-recruitment":    ("Canais de Recrutamento",              "Volume de contratações por canal de origem"),
-    "chart-manager":        ("Turnover por Gestor",                 "Taxa de desligamento por líder (min. 3 liderados)"),
-    "chart-correlation":    ("Satisfação vs Engagement",            "Relação entre satisfação e engajamento por status"),
+    "chart-manager":        ("Rotatividade por Gestor",             "Taxa de desligamento por líder (min. 3 liderados)"),
+    "chart-correlation":    ("Satisfação vs Engajamento",           "Relação entre satisfação e engajamento por situação"),
 }
 
 
@@ -75,7 +75,7 @@ def create_main_content() -> html.Div:
                             dcc.Tab(label="🏠 Visão Geral",          value="overview",    className="tab"),
                             dcc.Tab(label="🎯 Performance",           value="performance", className="tab"),
                             dcc.Tab(label="👥 Pessoas",               value="people",      className="tab"),
-                            dcc.Tab(label="📋 Recrutamento & Turnover", value="recruitment", className="tab"),
+                            dcc.Tab(label="📋 Recrutamento & Rotatividade", value="recruitment", className="tab"),
                         ],
                     ),
 

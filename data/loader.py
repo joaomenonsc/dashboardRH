@@ -38,6 +38,64 @@ def load_data() -> pd.DataFrame:
     end_date = df["DateofTermination"].fillna(pd.Timestamp.now())
     df["TenureMonths"] = ((end_date - df["DateofHire"]).dt.days / 30.44).round(1)
 
+    # Tradução dos valores categóricos para Português
+    df["Department"] = df["Department"].replace({
+        "Production": "Produção",
+        "IT/IS": "TI/SI",
+        "Software Engineering": "Engenharia de Software",
+        "Admin Offices": "Administração",
+        "Executive Office": "Diretoria",
+        "Sales": "Vendas"
+    })
+    
+    df["Sex"] = df["Sex"].replace({
+        "M": "Masculino",
+        "F": "Feminino"
+    })
+    
+    df["EmploymentStatus"] = df["EmploymentStatus"].replace({
+        "Active": "Ativo",
+        "Voluntarily Terminated": "Desligamento Voluntário",
+        "Terminated for Cause": "Desligamento por Justa Causa",
+        "Leave of Absence": "Licença",
+        "Future Start": "Início Futuro"
+    })
+    
+    df["TermReason"] = df["TermReason"].replace({
+        "N/A-StillEmployed": "N/A - Ainda Empreg.",
+        "career change": "Mudança de Carreira",
+        "Another position": "Outra Posição",
+        "unhappy": "Insatisfação",
+        "hours": "Horário",
+        "return to school": "Retorno Aos Estudos",
+        "attendance": "Faltas",
+        "performance": "Performance",
+        "more money": "Salário Maior",
+        "relocation out of area": "Mudança de Local",
+        "maternity leave": "Licença Maternidade",
+        "no-call, no-show": "Abandono de Emprego",
+        "military": "Serviço Militar",
+        "retiring": "Aposentadoria",
+        "medical issues": "Problemas de Saúde",
+        "gross misconduct": "Má Conduta Grave"
+    })
+    
+    df["PerformanceScore"] = df["PerformanceScore"].replace({
+        "Exceeds": "Excede Expectativas",
+        "Fully Meets": "Atende Totalmente",
+        "Needs Improvement": "Precisa Melhorar",
+        "PIP": "Plano de Melhoria"
+    })
+
+    df["RecruitmentSource"] = df["RecruitmentSource"].replace({
+        "Employee Referral": "Indicação",
+        "Diversity Job Fair": "Feira de Diversidade",
+        "On-line Web application": "Candidatura Online",
+        "Google Search": "Google",
+        "Website": "Site da Empresa"
+        # Others like LinkedIn, Indeed, CareerBuilder keep their names
+    })
+
     return df
 
 
